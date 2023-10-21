@@ -31,11 +31,7 @@ public class TodoItemController {
     @GetMapping("/{id}")
     public ResponseEntity<TodoItem> getTodoItemById(@PathVariable Long id) {
         Optional<TodoItem> todoItem = todoItemRepository.findById(id);
-        if (todoItem.isPresent()) {
-            return ResponseEntity.ok(todoItem.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return todoItem.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
